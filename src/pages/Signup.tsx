@@ -1,8 +1,8 @@
 import React from 'react'
-import { SignupCard } from '../components/SignupForm'
+import { SignupForm } from '../components/SignupForm'
 
 export const Signup = () => {
   return (
-    <SignupCard />
+    <SignupForm />
   )
 }
