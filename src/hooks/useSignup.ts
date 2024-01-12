@@ -4,9 +4,11 @@ import { UserDocument } from '../firebase/documentTypes';
 import { UserCredential } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useShowToast } from './useShowToast';
+import useAuthStore from '../store/authStore';
 
 export const useSignup = () => {
     const showToast = useShowToast()
+    const loginUser = useAuthStore(state => state.login)
 
     const [
         createUserWithEmailAndPassword,
@@ -25,7 +27,8 @@ export const useSignup = () => {
             if (newUser) {
                 const userDocument: UserDocument = createUser(newUser, inputs)
                 await setDoc(doc(firestore, "users", newUser.user.uid), userDocument)
-                localStorage.setItem("userinfo", JSON.stringify(userDocument))
+                localStorage.setItem("user-info", JSON.stringify(userDocument))
+                loginUser(userDocument)
             }
         } catch (error) {
             console.error(error)
