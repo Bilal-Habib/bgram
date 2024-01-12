@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import {z, ZodType} from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
-import { useSignup } from '../hooks/useSignup'
+import { useSignup } from '../../hooks/useSignup'
 import { Button } from '@chakra-ui/react';
 
 type SignupFormInputs = {

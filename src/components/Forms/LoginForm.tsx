@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { useLogin } from '../hooks/useLogin';
+import { useLogin } from '../../hooks/useLogin';
 import { Alert, AlertIcon, Button } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { ZodType, z } from 'zod';
-import { useShowToast } from '../hooks/useShowToast';
+import { useShowToast } from '../../hooks/useShowToast';
 
 type LoginInputs = {
     email: string
