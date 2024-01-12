@@ -4,6 +4,7 @@ import {z, ZodType} from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { useSignup } from '../../hooks/useSignup'
 import { Alert, AlertIcon, Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom'
 
 type SignupFormInputs = {
     email: string
@@ -42,6 +43,7 @@ export const SignupForm = () => {
     })
 
     const { loading, error, signup } = useSignup();
+    const navigate = useNavigate()
 
     const submitData = (inputs: SignupFormInputs) => {
         console.log("validation passed!", inputs)
@@ -93,6 +95,13 @@ export const SignupForm = () => {
                 >
                     {loading ? 'Signing Up...' : 'Sign Up'}
                 </Button>
+                <div className='flex justify-center space-x-3'>
+                    <p className=' py-1'>Already have an account?</p>
+                    <Button size={"sm"} fontSize={'14'} onClick={() => navigate('/login')}>
+                        Log in
+                    </Button>
+                    {/* <p>Log in</p> */}
+                </div>
             </form>
         </div>
     </div>
