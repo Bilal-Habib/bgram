@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import {z, ZodType} from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { useSignup } from '../../hooks/useSignup'
-import { Button } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button } from '@chakra-ui/react';
 
 type SignupFormInputs = {
     email: string
@@ -77,6 +77,12 @@ export const SignupForm = () => {
                     <p className='p-2 text-center text-gray-500'>People who use our service may have uploaded your contact information to Instagram. Learn More</p>
                     <p className='p-2 text-center text-gray-500'>By signing up, you agree to our Terms. Learn how we collect, use and share your data in our Privacy Policy and how we use cookies and similar technology in our Cookies Policy.</p>
                 </div>
+                {error && (
+                    <Alert status='error' fontSize={13} p={2} borderRadius={4}>
+                        <AlertIcon fontSize={12} />
+                        {error.message}
+                    </Alert>
+                )}
                 <Button
                     type="submit"
                     className="border w-full my-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white"
