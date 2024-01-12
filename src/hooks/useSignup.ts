@@ -25,7 +25,7 @@ export const useSignup = () => {
             if (newUser) {
                 const userDocument: UserDocument = createUser(newUser, inputs)
                 await setDoc(doc(firestore, "users", newUser.user.uid), userDocument)
-                localStorage.setItem("user'info", JSON.stringify(userDocument))
+                localStorage.setItem("userinfo", JSON.stringify(userDocument))
             }
         } catch (error) {
             console.error(error)
