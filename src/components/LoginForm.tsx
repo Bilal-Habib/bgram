@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useLogin } from '../hooks/useLogin';
-import { Button } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { ZodType, z } from 'zod';
@@ -33,10 +33,6 @@ export const LoginForm = () => {
     
     const { loading, error, login } = useLogin();
 
-    if (error) {
-        showToast("Error", "Email or password is incorrect, please try again", "error")
-    }
-
     const submitData = (inputs: LoginInputs) => {
         console.log("validation passed!", inputs)
         login(inputs)
@@ -57,9 +53,12 @@ export const LoginForm = () => {
                     <input {...register('password')} className='border p-2' type="password" />
                     {errors.password && <span className="error text-red-600">{errors.password.message}</span>}
                 </div>
-                {/* <Link to="/home">
-                    <button className='border w-full my-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white'>Sign In</button>
-                </Link> */}
+                {error && (
+                    <Alert status='error' fontSize={13} p={2} borderRadius={4}>
+                        <AlertIcon fontSize={12} />
+                        {'Email or password is incorrect, please try again'}
+                    </Alert>
+                )}
                 <Button
                     type="submit"
                     className="border w-full my-5 py-2"

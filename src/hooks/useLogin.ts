@@ -3,6 +3,7 @@ import { auth, firestore } from '../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import useAuthStore from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
+import { useShowToast } from './useShowToast';
 
 export const useLogin = () => {
   const [
@@ -13,8 +14,18 @@ export const useLogin = () => {
   ] = useSignInWithEmailAndPassword(auth);
 
   const navigate = useNavigate()
+  const showToast = useShowToast()
 
   const loginUser = useAuthStore((state) => state.login)
+
+  const displayErrorMessage = (error: unknown) => {
+    if (error instanceof Error) {
+      showToast('Error', error.message, 'error')
+    } else {
+      showToast('Error', 'An error occurred', 'error')
+      console.error(error)
+    }
+  }
 
   const login = async (inputs: { email: string; password: string; }) => {
     try {
@@ -27,7 +38,7 @@ export const useLogin = () => {
         navigate('/home')
       }
     } catch (error) {
-      console.error(error)
+      displayErrorMessage(error)
     }
 
   }
