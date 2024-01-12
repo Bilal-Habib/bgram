@@ -79,7 +79,7 @@ export const SignupForm = () => {
                 </div>
                 <Button
                     type="submit"
-                    className="border w-full my-5 py-2"
+                    className="border w-full my-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white"
                     colorScheme='blue'
                     isLoading={loading} // Chakra UI's loading state
                     disabled={loading}

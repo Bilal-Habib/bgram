@@ -1,8 +1,8 @@
 import React from 'react'
-import { LoginCard } from '../components/LoginCard'
+import { LoginForm } from '../components/LoginForm'
 
 export const Login = () => {
   return (
-    <LoginCard />
+    <LoginForm />
   )
 }
