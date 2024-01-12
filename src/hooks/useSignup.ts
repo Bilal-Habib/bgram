@@ -2,9 +2,16 @@ import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth, firestore } from '../firebase/firebase';
 import { UserDocument } from '../firebase/documentTypes';
 import { UserCredential } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { useShowToast } from './useShowToast';
 import useAuthStore from '../store/authStore';
+
+type SignupFormInputs = {
+    email: string
+    fullName: string
+    username: string
+    password: string
+}
 
 export const useSignup = () => {
     const showToast = useShowToast()
@@ -17,7 +24,16 @@ export const useSignup = () => {
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
 
-    const signup = async (inputs: { email: string; password: string; }) => {
+    const signup = async (inputs: SignupFormInputs) => {
+        const usersRef = collection(firestore, 'users')
+        const q = query(usersRef, where('username', '==', inputs.username))
+        const querySnapshot = await getDocs(q)
+
+        if (!querySnapshot.empty) {
+            showToast('Error', 'Username already exists', 'error')
+            return
+        }
+
         try {
             const newUser: UserCredential | undefined = await createUserWithEmailAndPassword(inputs.email, inputs.password)
             if (!newUser && error) {
