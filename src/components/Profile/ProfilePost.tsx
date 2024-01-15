@@ -30,7 +30,7 @@ export const ProfilePost: React.FC<ProfilePostProps> = ({ img }) => {
             bottom={0}
             bg={"whiteAlpha.700"}
             transition={"all 0.3s ease"}
-            zIndex={1}
+            zIndex={0}
             justifyContent={"center"}
           >
             <Flex alignItems={"center"} justifyContent={"center"} gap={50}>
