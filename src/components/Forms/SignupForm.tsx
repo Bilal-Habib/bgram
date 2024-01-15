@@ -100,7 +100,6 @@ export const SignupForm = () => {
                     <Button size={"sm"} fontSize={'14'} onClick={() => navigate('/login')}>
                         Log in
                     </Button>
-                    {/* <p>Log in</p> */}
                 </div>
             </form>
         </div>
