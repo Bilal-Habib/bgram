@@ -1,11 +1,24 @@
-import React from 'react'
 import { NavFooter } from '../components/NavBar/NavFooter'
 import { Container, Flex } from '@chakra-ui/react'
 import { ProfileHeader } from '../components/Profile/ProfileHeader'
 import { ProfileTabs } from '../components/Profile/ProfileTabs'
 import { ProfilePosts } from '../components/Profile/ProfilePosts'
+import { useGetUserProfileByUsername } from '../hooks/useGetUserProfileByUsername'
+import { useParams } from 'react-router-dom'
+import { ProfileHeaderSkeleton } from '../components/Profile/ProfileHeaderSkeleton'
+import { UserNotFound } from '../components/NotFound/UserNotFound'
 
 export const Profile = () => {
+  const {username} = useParams()
+  const {isLoading, userProfile} = useGetUserProfileByUsername(username)
+
+  const userFound = !isLoading && userProfile
+  const userNotFound = !isLoading && !userProfile
+  
+  if (userNotFound) {
+    return <UserNotFound />
+  }
+
   return <>
     <Container maxW="container.lg" py={5}>
       <Flex
@@ -16,7 +29,8 @@ export const Profile = () => {
         mx={'auto'}
         flexDirection={'column'}
       >
-        <ProfileHeader />
+        {userFound && <ProfileHeader />}
+        {isLoading && <ProfileHeaderSkeleton />}
       </Flex>
 
       <Flex
