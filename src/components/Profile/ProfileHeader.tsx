@@ -1,8 +1,11 @@
 import { Avatar, AvatarGroup, Button, Flex, Text, VStack } from '@chakra-ui/react'
 import { useUserProfileStore } from '../../store/userProfileStore'
+import useAuthStore from '../../store/authStore'
 
 export const ProfileHeader = () => {
   const {userProfile} = useUserProfileStore()
+  const authUser = useAuthStore(state => state.user)
+  const visitingOwnProfileAndAuth = authUser && authUser.username === userProfile?.username
 
   return <Flex gap={{base:10, sm:10}} py={10} direction={{base:'column', sm:'row'}}>
 
@@ -26,15 +29,17 @@ export const ProfileHeader = () => {
           {userProfile?.username}
         </Text>
 
-        <Flex
-          gap={4}
-          alignItems={'center'}
-          justifyContent={'center'}
-        >
-          <Button _hover={{bg:'gray.200'}} size={{base:'xs', md:'sm'}}>
-            Edit Profile
-          </Button>
-        </Flex>
+        {visitingOwnProfileAndAuth && (
+          <Flex
+            gap={4}
+            alignItems={'center'}
+            justifyContent={'center'}
+          >
+            <Button _hover={{bg:'gray.200'}} size={{base:'xs', md:'sm'}}>
+              Edit Profile
+            </Button>
+          </Flex>
+        )}
       </Flex>
 
       <Flex alignItems={'center'} gap={{base:2, sm:4}}>
