@@ -1,9 +1,9 @@
-import { DocumentData } from 'firebase/firestore';
 import {create} from 'zustand';
+import { UserDocument } from '../firebase/documentTypes';
 
 interface UserProfileStore {
-    userProfile:  DocumentData | null
-    setUserProfile: (userProfile: DocumentData | null) => void
+    userProfile:  UserDocument | null
+    setUserProfile: (userProfile: UserDocument | null) => void
 }
 
 export const useUserProfileStore = create<UserProfileStore>((set) => ({
