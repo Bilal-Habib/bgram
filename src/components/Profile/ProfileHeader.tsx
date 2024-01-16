@@ -6,6 +6,7 @@ export const ProfileHeader = () => {
   const {userProfile} = useUserProfileStore()
   const authUser = useAuthStore(state => state.user)
   const visitingOwnProfileAndAuth = authUser && authUser.username === userProfile?.username
+  const visitingAnotherProfileAndAuth = authUser && authUser.username !== userProfile?.username
 
   return <Flex gap={{base:10, sm:10}} py={10} direction={{base:'column', sm:'row'}}>
 
@@ -41,16 +42,18 @@ export const ProfileHeader = () => {
           </Flex>
         )}
 
-        <Flex gap={4} alignItems={"center"} justifyContent={"center"}>
-          <Button
-            bg={"blue.500"}
-            color={"white"}
-            _hover={{ bg: "blue.600" }}
-            size={{ base: "xs", md: "sm" }}
-          >
-            Follow
-          </Button>
-        </Flex>
+        {visitingAnotherProfileAndAuth && (
+          <Flex gap={4} alignItems={"center"} justifyContent={"center"}>
+            <Button
+              bg={"blue.500"}
+              color={"white"}
+              _hover={{ bg: "blue.600" }}
+              size={{ base: "xs", md: "sm" }}
+            >
+              Follow
+            </Button>
+          </Flex>
+        )}
       </Flex>
 
       <Flex alignItems={'center'} gap={{base:2, sm:4}}>
