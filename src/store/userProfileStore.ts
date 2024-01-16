@@ -1,6 +1,12 @@
+import { DocumentData } from 'firebase/firestore';
 import {create} from 'zustand';
 
-export const useUserProfileStore = create((set) => ({
+interface UserProfileStore {
+    userProfile:  DocumentData | null
+    setUserProfile: (userProfile: DocumentData | null) => void
+}
+
+export const useUserProfileStore = create<UserProfileStore>((set) => ({
     userProfile: null,
-    setUserProfile: (userProfile: any) => set({userProfile}),
+    setUserProfile: (userProfile) => set({userProfile}),
 }))
