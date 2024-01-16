@@ -4,14 +4,13 @@ import { DocumentData, collection, getDocs, query, where } from "firebase/firest
 import { firestore } from "../firebase/firebase"
 import { useUserProfileStore } from "../store/userProfileStore"
 
-export const useGetUserProfileByUsername = (username: string) => {
+export const useGetUserProfileByUsername = (username: string | undefined) => {
   const [isLoading, setIsLoading] = useState(true)
   const showToast = useShowToast()
   const {userProfile, setUserProfile} = useUserProfileStore()
 
   useEffect(() => {
     const getUserProfile = async () => {
-      setIsLoading(true)
       try {
         const usersRef = collection(firestore, 'users')
         const q = query(usersRef, where('username', '==', username))
@@ -30,6 +29,8 @@ export const useGetUserProfileByUsername = (username: string) => {
         setUserProfile(userDoc)
       } catch (error) {
         displayErrorMessage(error, showToast)
+      } finally {
+        setIsLoading(false)
       }
     }
 
