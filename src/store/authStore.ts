@@ -1,11 +1,11 @@
-import { DocumentData } from 'firebase/firestore';
 import {create} from 'zustand';
+import { UserDocument } from '../firebase/documentTypes';
 
 interface AuthStore {
-    user: DocumentData | null;
-    login: (user: DocumentData | undefined) => void;
+    user: UserDocument | null;
+    login: (user: UserDocument) => void;
     logout: () => void;
-    setUser: (user: DocumentData | undefined | null) => void;
+    setUser: (user: UserDocument | null) => void;
 }
 
 const useAuthStore = create<AuthStore>((set) => {
