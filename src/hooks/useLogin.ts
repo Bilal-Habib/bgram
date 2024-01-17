@@ -1,9 +1,10 @@
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth, firestore } from '../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import useAuthStore from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useShowToast } from './useShowToast';
+import { UserDocument } from '../firebase/documentTypes';
+import { auth, firestore } from '../firebase/firebase';
 
 export const useLogin = () => {
   const [
@@ -33,9 +34,16 @@ export const useLogin = () => {
       if (userCred) {
         const docRef = doc(firestore, "users", userCred.user.uid)
         const docSnap = await getDoc(docRef)
-        localStorage.setItem("user-info", JSON.stringify(docSnap.data()))
-        loginUser(docSnap.data())
-        navigate('/home')
+  
+        if (docSnap.exists()) {
+          const userData = docSnap.data() as UserDocument; // Assuming UserDocument is your data structure
+          localStorage.setItem("user-info", JSON.stringify(userData));
+          loginUser(userData);
+          navigate('/home');
+        } else {
+          // Handle case where user data doesn't exist
+          showToast('Error', 'User data not found', 'error');
+        }
       }
     } catch (error) {
       displayErrorMessage(error)
