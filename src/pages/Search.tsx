@@ -1,4 +1,5 @@
 import { Box, Flex, Tooltip } from "@chakra-ui/react";
+import { NavFooter } from "../components/NavBar/NavFooter";
 
 export const Search = () => {
 	return (
@@ -26,6 +27,7 @@ export const Search = () => {
 					<Box display={{ base: "none", md: "block" }}>Search</Box>
 				</Flex>
 			</Tooltip>
+      <NavFooter />
 		</>
 	);
 };

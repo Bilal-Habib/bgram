@@ -5,10 +5,10 @@ import { HomeBody } from '../components/HomeBody'
 
 export const Home = () => {
   return (
-    <div>
+    <>
         <NavHeader />
         <HomeBody />
         <NavFooter />
-    </div>
+    </>
   )
 }
