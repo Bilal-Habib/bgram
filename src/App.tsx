@@ -5,6 +5,7 @@ import { Login } from "./pages/Login";
 import { Profile } from "./pages/Profile";
 import { Signup } from "./pages/Signup";
 import { UploadPost } from "./pages/UploadPost";
+import { Search } from "./pages/Search";
 
 function App() {
   const authUser = useAuthStore(state => state.user)
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={authUser ? <Home /> : <Navigate to='/login'/>} />
         <Route path="/upload-post" element={authUser ? <UploadPost /> : <Navigate to='/login'/>} />
         <Route path="/:username" element={authUser ? <Profile /> : <Navigate to='/login'/>} />
+        <Route path="/search" element={authUser ? <Search /> : <Navigate to='/login'/>} />
     </Routes>
     </BrowserRouter>
   );
