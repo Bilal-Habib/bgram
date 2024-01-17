@@ -1,5 +1,3 @@
-import React from 'react'
-
 type UserDocument = {
     uid:string,
     email:string,
