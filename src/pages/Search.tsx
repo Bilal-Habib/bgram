@@ -2,10 +2,11 @@ import { Box, Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, Mod
 import { NavFooter } from "../components/NavBar/NavFooter";
 import { useSearchUser } from "../hooks/useSearchUser";
 import { useRef } from "react";
+import {SuggestedUser} from "../components/SuggestedUsers/SuggestedUser";
 
 export const Search = () => {
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const {isLoading, user, getUserProfile} = useSearchUser()
+  const {isLoading, user, getUserProfile, setUser} = useSearchUser()
   const searchRef = useRef<HTMLInputElement>(null);
 
   const handleSearchUser = (e: React.FormEvent) => {
@@ -14,9 +15,6 @@ export const Search = () => {
       getUserProfile(searchRef.current.value);
     }
   }
-
-  // remove this once done
-  console.log(user);
 
 	return (
 		<>
@@ -62,7 +60,7 @@ export const Search = () => {
 								</Button>
 							</Flex>
 						</form>
-						{/* {user && <SuggestedUser user={user} setUser={setUser} />} */}
+						{user && <SuggestedUser user={user} setUser={setUser} />}
 					</ModalBody>
 				</ModalContent>
 			</Modal>

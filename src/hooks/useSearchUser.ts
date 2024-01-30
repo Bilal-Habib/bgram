@@ -31,7 +31,7 @@ export const useSearchUser = () => {
     }
   }
 
-  return {isLoading, user, getUserProfile}
+  return {isLoading, user, getUserProfile, setUser}
 }
 
 function displayErrorMessage(error: unknown, showToast: (title: string, description: string, status: "info" | "warning" | "success" | "error" | "loading" | undefined) => void) {
