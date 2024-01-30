@@ -11,6 +11,7 @@ export const useSearchUser = () => {
 
   const getUserProfile = async (username:string) => {
     setIsLoading(true)
+    setUser(null)
     try {
       const usersRef = collection(firestore, 'users')
       const q = query(usersRef, where('username', '==', username))
