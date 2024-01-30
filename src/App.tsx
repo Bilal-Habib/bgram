@@ -18,7 +18,6 @@ function App() {
         <Route path="/" element={authUser ? <Home /> : <Navigate to='/login'/>} />
         <Route path="/upload-post" element={authUser ? <UploadPost /> : <Navigate to='/login'/>} />
         <Route path="/:username" element={authUser ? <Profile /> : <Navigate to='/login'/>} />
-        <Route path="/search" element={authUser ? <Search /> : <Navigate to='/login'/>} />
     </Routes>
     </BrowserRouter>
   );
