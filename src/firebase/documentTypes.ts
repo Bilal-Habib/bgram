@@ -12,4 +12,14 @@ type UserDocument = {
     createdAt:Date
 }
 
-export type {UserDocument}
+type PostDocument = {
+    id: string,
+    caption: string,
+    likes: string[],
+    comments: string[],
+    createdAt: Date,
+    createdBy: string,
+    imageURL: string
+}
+
+export type {UserDocument, PostDocument}

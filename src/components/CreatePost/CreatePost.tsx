@@ -2,12 +2,36 @@ import { Image, Button, CloseButton, Flex, Input, Modal, ModalBody, ModalCloseBu
 import { useRef, useState } from "react";
 import { BsFillImageFill } from "react-icons/bs";
 import { usePreviewImg } from "../../hooks/usePreviewImg";
+import { useShowToast } from "../../hooks/useShowToast";
+import useAuthStore from "../../store/authStore";
+import { usePostStore } from "../../store/usePostStore";
+import { useUserProfileStore } from "../../store/userProfileStore";
+import { firestore, storage } from "../../firebase/firebase";
+import { addDoc, collection, doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import { PostDocument } from "../../firebase/documentTypes";
 
 export const CreatePost = () => {
     const {isOpen, onOpen, onClose} = useDisclosure()
     const [caption, setCaption] = useState("")
     const imageRef = useRef<HTMLInputElement>(null)
     const { selectedFile, handleImageChange, setSelectedFile } = usePreviewImg()
+    const { isLoading, handleCreatePost } = useCreatePost()
+    const showToast = useShowToast()
+
+    const handlePostCreation = async () => {
+		try {
+            if (!selectedFile) {
+                return
+            }
+			await handleCreatePost(selectedFile, caption);
+			onClose();
+			setCaption("");
+			setSelectedFile(null);
+		} catch (error) {
+			showToast("Error", "Could not create post", "error");
+		}
+	};
 
 	return (
 		<>
@@ -53,7 +77,7 @@ export const CreatePost = () => {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button mr={3}>Post</Button>
+						<Button mr={3} onClick={handlePostCreation} isLoading={isLoading}>Post</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
@@ -61,3 +85,57 @@ export const CreatePost = () => {
 	);
 };
 
+
+function useCreatePost() {
+	const showToast = useShowToast();
+	const [isLoading, setIsLoading] = useState(false);
+	const authUser = useAuthStore((state) => state.user);
+	const createPost = usePostStore((state) => state.createPost);
+	const userProfile = useUserProfileStore((state) => state.userProfile);
+
+	const handleCreatePost = async (selectedFile: string, caption: string) => {
+		if (isLoading) return;
+		if (!selectedFile) throw new Error("Please select an image");
+		setIsLoading(true);
+
+        if (!authUser || !userProfile) {
+            return null
+        }
+
+		const newPost: PostDocument = {
+            id: "",
+			caption: caption,
+			likes: [],
+			comments: [],
+			createdAt: new Date(),
+			createdBy: authUser.uid,
+            imageURL: ""
+		};
+
+		try {
+			const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+			const userDocRef = doc(firestore, "users", authUser.uid);
+			const imageRef = ref(storage, `posts/${postDocRef.id}`);
+
+			await updateDoc(userDocRef, { posts: arrayUnion(postDocRef.id) });
+			await uploadString(imageRef, selectedFile, "data_url");
+			const downloadURL = await getDownloadURL(imageRef);
+
+			await updateDoc(postDocRef, { imageURL: downloadURL });
+
+			newPost.imageURL = downloadURL;
+
+			if (userProfile.uid === authUser.uid) {
+                createPost({ ...newPost, id: postDocRef.id });
+            }
+
+			showToast("Success", "Post created successfully", "success");
+		} catch (error) {
+			showToast("Error", "Post was not created due to an error", "error");
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	return { isLoading, handleCreatePost };
+}
