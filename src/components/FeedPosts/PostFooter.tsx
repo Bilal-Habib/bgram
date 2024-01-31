@@ -28,7 +28,7 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 				</Box>
 			</Flex>
 			<Text fontWeight={600} fontSize={"sm"}>
-				{post.likes} likes
+				{post.likes.length} likes
 			</Text>
 
 			{isProfilePage && (
