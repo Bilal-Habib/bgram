@@ -22,6 +22,12 @@ import {PostFooter} from "../FeedPosts/PostFooter";
 import {useUserProfileStore} from "../../store/userProfileStore";
 import { PostDocument } from "../../firebase/documentTypes";
 import useAuthStore from "../../store/authStore";
+import { usePostStore } from "../../store/usePostStore";
+import { useState } from "react";
+import { deleteObject, ref } from "firebase/storage";
+import { doc, deleteDoc, updateDoc, arrayRemove } from "firebase/firestore";
+import { storage, firestore } from "../../firebase/firebase";
+import { useShowToast } from "../../hooks/useShowToast";
 
 interface ProfilePostProps {
   post: PostDocument
@@ -30,7 +36,41 @@ interface ProfilePostProps {
 export const ProfilePost: React.FC<ProfilePostProps> = ({ post }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const userProfile = useUserProfileStore((state) => state.userProfile);
-  const authUser = useAuthStore((state) => state.user);
+  	const authUser = useAuthStore((state) => state.user);
+	const deletePost = usePostStore((state) => state.deletePost);
+	const decrementPostsCount = useUserProfileStore((state) => state.deletePost);
+	const [isDeleting, setIsDeleting] = useState(false);
+	const showToast = useShowToast()
+
+	const handleDeletePost = async () => {
+		if (!window.confirm("Are you sure you want to delete this post?")) return;
+		if (isDeleting) return;
+
+		try {
+			const imageRef = ref(storage, `posts/${post.id}`);
+			await deleteObject(imageRef);
+
+			if (!authUser) {
+				console.error("Auth user is null")
+				return
+			}
+
+			const userRef = doc(firestore, "users", authUser.uid);
+			await deleteDoc(doc(firestore, "posts", post.id));
+
+			await updateDoc(userRef, {
+				posts: arrayRemove(post.id),
+			});
+
+			deletePost(post.id);
+			decrementPostsCount(post.id);
+			showToast("Success", "Post deleted successfully", "success");
+		} catch (error) {
+			showToast("Error", "Post could not be deleted", "error");
+		} finally {
+			setIsDeleting(false);
+		}
+	};
 
 	return (
 		<>
@@ -108,13 +148,15 @@ export const ProfilePost: React.FC<ProfilePostProps> = ({ post }) => {
 											{userProfile?.username}
 										</Text>
 									</Flex>
-                  {authUser?.uid === userProfile?.uid && (
+                  					{authUser?.uid === userProfile?.uid && (
 										<Button
 											size={"sm"}
 											bg={"transparent"}
 											_hover={{ bg: "whiteAlpha.300", color: "red.600" }}
 											borderRadius={4}
 											p={1}
+											onClick={handleDeletePost}
+											isLoading={isDeleting}
 										>
 											<MdDelete size={20} cursor='pointer' />
 										</Button>
