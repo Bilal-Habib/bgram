@@ -10,6 +10,7 @@ import { firestore, storage } from "../../firebase/firebase";
 import { addDoc, collection, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { PostDocument } from "../../firebase/documentTypes";
+import { useLocation } from "react-router-dom";
 
 export const CreatePost = () => {
     const {isOpen, onOpen, onClose} = useDisclosure()
@@ -91,7 +92,9 @@ function useCreatePost() {
 	const [isLoading, setIsLoading] = useState(false);
 	const authUser = useAuthStore((state) => state.user);
 	const createPost = usePostStore((state) => state.createPost);
+	const addPost = useUserProfileStore((state) => state.addPost);
 	const userProfile = useUserProfileStore((state) => state.userProfile);
+	const { pathname } = useLocation();
 
 	const handleCreatePost = async (selectedFile: string, caption: string) => {
 		if (isLoading) return;
@@ -128,6 +131,11 @@ function useCreatePost() {
 			if (userProfile.uid === authUser.uid) {
                 createPost({ ...newPost, id: postDocRef.id });
             }
+
+			if (pathname !== "/" && userProfile.uid === authUser.uid) {
+				addPost({ ...newPost, id: postDocRef.id });
+			}
+
 
 			showToast("Success", "Post created successfully", "success");
 		} catch (error) {
