@@ -36,7 +36,7 @@ export const useGetUserPosts = () => {
 					posts.push(post);
 				});
 
-				posts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+				// posts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 				setPosts(posts);
 			} catch (error) {
 				showToast("Error", "Could not retrieve posts", "error");
