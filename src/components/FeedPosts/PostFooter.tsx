@@ -14,7 +14,7 @@ interface PostFooterProps {
 export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) => {
 	const [comment, setComment] = useState("");
 	const authUser = useAuthStore((state) => state.user);
-	const commentRef = useRef(null);
+	const commentRef = useRef<HTMLInputElement | null>(null);
 	const { onOpen } = useDisclosure();
 	const { isCommenting, handlePostComment } = usePostComment();
 
@@ -30,7 +30,7 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 					{<NotificationsLogo />}
 				</Box>
 
-				<Box cursor={"pointer"} fontSize={18}>
+				<Box cursor={"pointer"} fontSize={18} onClick={() => commentRef.current?.focus()}>
 					<CommentLogo />
 				</Box>
 			</Flex>

@@ -28,6 +28,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { doc, deleteDoc, updateDoc, arrayRemove } from "firebase/firestore";
 import { storage, firestore } from "../../firebase/firebase";
 import { useShowToast } from "../../hooks/useShowToast";
+import { Caption } from "../Comment/Caption";
 
 interface ProfilePostProps {
   post: PostDocument
@@ -144,9 +145,14 @@ export const ProfilePost: React.FC<ProfilePostProps> = ({ post }) => {
 								<Flex alignItems={"center"} justifyContent={"space-between"}>
 									<Flex alignItems={"center"} gap={4}>
 										<Avatar src={userProfile?.profilePicUrl} size={"sm"} name='As a Programmer' />
+										<VStack alignItems={'start'} gap={0} mx={'auto'} flex={1}>
 										<Text fontWeight={"bold"} fontSize={12}>
 											{userProfile?.username}
 										</Text>
+										<Text fontSize={12}>
+											{post.caption}
+										</Text>
+										</VStack>
 									</Flex>
                   					{authUser?.uid === userProfile?.uid && (
 										<Button
@@ -165,6 +171,8 @@ export const ProfilePost: React.FC<ProfilePostProps> = ({ post }) => {
 								<Divider my={4} bg={"gray.500"} />
 
 								<VStack w='full' alignItems={"start"} maxH={"350px"} overflowY={"auto"}>
+									{/* CAPTION */}
+									{post.caption && <Caption post={post} />}
 									{/* COMMENTS */}
 									{post.comments.map((comment) => (
 										<Comment comment={comment} />

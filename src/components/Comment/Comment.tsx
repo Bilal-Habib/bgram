@@ -13,7 +13,7 @@ export const Comment: React.FC<CommentProps> = ({ comment }) => {
   const { userProfile, isLoading } = useGetUserProfileById(comment.createdBy);
 
 	if (isLoading) return <CommentSkeleton />;
-	return ( userProfile && (
+	return userProfile && (
 		<Flex gap={4}>
 			<Link to={`/${userProfile.username}`}>
 				<Avatar src={userProfile.profilePicUrl} size={"sm"} />
@@ -32,7 +32,6 @@ export const Comment: React.FC<CommentProps> = ({ comment }) => {
 				</Text>
 			</Flex>
 		</Flex>
-  )
 	);
 }
 
