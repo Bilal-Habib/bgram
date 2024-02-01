@@ -180,7 +180,7 @@ export const ProfilePost: React.FC<ProfilePostProps> = ({ post }) => {
 								</VStack>
 								<Divider my={4} bg={"gray.8000"} />
 
-								<PostFooter isProfilePage={true} post={post} />
+								<PostFooter isProfilePage={true} post={post}/>
 							</Flex>
 						</Flex>
 					</ModalBody>

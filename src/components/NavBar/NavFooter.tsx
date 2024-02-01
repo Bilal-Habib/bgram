@@ -7,8 +7,8 @@ export const NavFooter = () => {
   const authUser = useAuthStore(state => state.user)
   
   return (
-    <footer className="bg-white border-t border-gray-200 fixed bottom-0 w-full">
-      <div className="flex justify-around py-2 mb-2">
+    <footer className="bg-white border-t border-gray-200 fixed bottom-0 w-full z-0">
+      <div className="flex justify-around py-2 mb-2 z-0">
         <Link to="/">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 

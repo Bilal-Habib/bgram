@@ -20,7 +20,7 @@ interface PostModalProps {
   onClose: () => void;
 }
 
-export const PostModal: React.FC<PostModalProps> = ({ post, isOpen, onClose }) => {
+export const CommentsModal: React.FC<PostModalProps> = ({ post, isOpen, onClose }) => {
   const { handlePostComment, isCommenting } = usePostComment();
   const commentRef = useRef<HTMLInputElement>(null);
   const commentsContainerRef = useRef<HTMLDivElement>(null);

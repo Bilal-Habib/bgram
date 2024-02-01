@@ -3,22 +3,24 @@ import { useRef, useState } from "react";
 import { timeAgo } from "../../utils/timeAgo";
 import useAuthStore from "../../store/authStore";
 import { CommentLogo, NotificationsLogo, UnlikeLogo } from "../../assets/constants";
-import { PostDocument } from "../../firebase/documentTypes";
+import { PostDocument, UserDocument } from "../../firebase/documentTypes";
 import { usePostComment } from "../../hooks/usePostComment";
 import useLikePost from "../../hooks/useLikePost";
+import { CommentsModal } from '../Modals/CommentsModal'
 
 interface PostFooterProps {
     post: PostDocument
     isProfilePage: boolean
+	creatorProfile?: UserDocument | null
 }
 
-export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) => {
+export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage, creatorProfile }) => {
 	const [comment, setComment] = useState("");
 	const authUser = useAuthStore((state) => state.user);
 	const commentRef = useRef<HTMLInputElement | null>(null);
-	const { onOpen } = useDisclosure();
 	const { isCommenting, handlePostComment } = usePostComment();
 	const { handleLikePost, isLiked, likes } = useLikePost(post);
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleSubmitComment = async () => {
 		await handlePostComment(post.id, comment);
@@ -49,6 +51,7 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 			{!isProfilePage && (
 				<>
 					<Text fontSize='sm' fontWeight={700}>
+						{creatorProfile?.username}{" "}
 						<Text as='span' fontWeight={400}>
 							{post.caption}
 						</Text>
@@ -58,6 +61,8 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 							View all {post.comments.length} comments
 						</Text>
 					)}
+					{/* COMMENTS MODAL ONLY IN THE HOME PAGE */}
+					{isOpen ? <CommentsModal isOpen={isOpen} onClose={onClose} post={post} /> : null}
 				</>
 			)}
 
