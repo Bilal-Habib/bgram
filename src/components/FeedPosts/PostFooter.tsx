@@ -2,9 +2,10 @@ import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text, useDiscl
 import { useRef, useState } from "react";
 import { timeAgo } from "../../utils/timeAgo";
 import useAuthStore from "../../store/authStore";
-import { CommentLogo, NotificationsLogo } from "../../assets/constants";
+import { CommentLogo, NotificationsLogo, UnlikeLogo } from "../../assets/constants";
 import { PostDocument } from "../../firebase/documentTypes";
 import { usePostComment } from "../../hooks/usePostComment";
+import useLikePost from "../../hooks/useLikePost";
 
 interface PostFooterProps {
     post: PostDocument
@@ -17,6 +18,7 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 	const commentRef = useRef<HTMLInputElement | null>(null);
 	const { onOpen } = useDisclosure();
 	const { isCommenting, handlePostComment } = usePostComment();
+	const { handleLikePost, isLiked, likes } = useLikePost(post);
 
 	const handleSubmitComment = async () => {
 		await handlePostComment(post.id, comment);
@@ -26,8 +28,8 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 	return (
 		<Box mb={10} marginTop={"auto"}>
 			<Flex alignItems={"center"} gap={4} w={"full"} pt={0} mb={2} mt={4}>
-				<Box cursor={"pointer"} fontSize={18}>
-					{<NotificationsLogo />}
+			<Box onClick={handleLikePost} cursor={"pointer"} fontSize={18}>
+					{!isLiked ? <NotificationsLogo /> : <UnlikeLogo />}
 				</Box>
 
 				<Box cursor={"pointer"} fontSize={18} onClick={() => commentRef.current?.focus()}>
@@ -35,7 +37,7 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 				</Box>
 			</Flex>
 			<Text fontWeight={600} fontSize={"sm"}>
-				{post.likes.length} likes
+				{likes} likes
 			</Text>
 
 			{isProfilePage && (
