@@ -50,7 +50,7 @@ export const CommentsModal: React.FC<PostModalProps> = ({ post, isOpen, onClose 
   return (
     <Modal isOpen={isOpen} onClose={onClose} motionPreset='slideInLeft'>
       <ModalOverlay />
-      <ModalContent bg={'black'} border={'1px solid gray'} maxW={'400px'}>
+      <ModalContent bg={'white'} border={'1px solid gray'} maxW={'400px'}>
         <ModalHeader>Comments</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
