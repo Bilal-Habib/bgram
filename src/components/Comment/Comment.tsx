@@ -1,27 +1,25 @@
 import { Avatar, Flex, Text } from '@chakra-ui/react'
 import React from 'react'
+import { CommentDocument } from '../../firebase/documentTypes'
 
 interface CommentProps {
-    createdAt: string,
-    username: string,
-    profilePic: string,
-    text: string
+    comment: CommentDocument
 }
 
-export const Comment: React.FC<CommentProps> = ({ createdAt, username, profilePic, text }) => {
+export const Comment: React.FC<CommentProps> = ({ comment }) => {
   return <Flex gap={4}>
-    <Avatar src={profilePic} name={username} size={'sm'}/>
+    {/* <Avatar src={comment.profilePic} name={username} size={'sm'}/> */}
     <Flex direction={'column'}>
       <Flex gap={2}>
         <Text fontWeight={'bold'} fontSize={'xs'}>
-          {username}
+          {"username"}
         </Text>
         <Text fontSize={'xs'} color={'gray.500'}>
-          {createdAt}
+          {Date.now()}
         </Text>
       </Flex>
       <Text fontSize={'sm'}>
-        {text}
+        {comment.comment}
       </Text>
     </Flex>
   </Flex>

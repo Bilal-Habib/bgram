@@ -16,10 +16,17 @@ type PostDocument = {
     id: string,
     caption: string,
     likes: string[],
-    comments: string[],
+    comments: CommentDocument[],
     createdAt: Date,
     createdBy: string,
     imageURL: string
 }
 
-export type {UserDocument, PostDocument}
+type CommentDocument = {
+    postId: string,
+    comment: string,
+    createdBy: string,
+    createdAt: Date
+}
+
+export type {UserDocument, PostDocument, CommentDocument}

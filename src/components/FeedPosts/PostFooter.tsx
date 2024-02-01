@@ -4,6 +4,7 @@ import { timeAgo } from "../../utils/timeAgo";
 import useAuthStore from "../../store/authStore";
 import { CommentLogo, NotificationsLogo } from "../../assets/constants";
 import { PostDocument } from "../../firebase/documentTypes";
+import { usePostComment } from "../../hooks/usePostComment";
 
 interface PostFooterProps {
     post: PostDocument
@@ -15,6 +16,12 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 	const authUser = useAuthStore((state) => state.user);
 	const commentRef = useRef(null);
 	const { onOpen } = useDisclosure();
+	const { isCommenting, handlePostComment } = usePostComment();
+
+	const handleSubmitComment = async () => {
+		await handlePostComment(post.id, comment);
+		setComment("");
+	};
 
 	return (
 		<Box mb={10} marginTop={"auto"}>
@@ -71,6 +78,8 @@ export const PostFooter: React.FC<PostFooterProps> = ({ post, isProfilePage }) =
 								cursor={"pointer"}
 								_hover={{ color: "white" }}
 								bg={"transparent"}
+								onClick={handleSubmitComment}
+								isLoading={isCommenting}
 							>
 								Post
 							</Button>

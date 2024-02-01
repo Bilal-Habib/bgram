@@ -166,9 +166,9 @@ export const ProfilePost: React.FC<ProfilePostProps> = ({ post }) => {
 
 								<VStack w='full' alignItems={"start"} maxH={"350px"} overflowY={"auto"}>
 									{/* COMMENTS */}
-									{
-										<Comment createdAt={"createdAt"} username={"username"} profilePic={"profilePic"} text={"text"}  />
-									}
+									{post.comments.map((comment) => (
+										<Comment comment={comment} />
+									))}
 								</VStack>
 								<Divider my={4} bg={"gray.8000"} />
 
