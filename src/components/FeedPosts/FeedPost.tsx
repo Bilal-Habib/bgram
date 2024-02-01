@@ -1,4 +1,4 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Center, Image } from "@chakra-ui/react";
 import {PostFooter} from "./PostFooter";
 import {PostHeader} from "./PostHeader";
 import { PostDocument } from "../../firebase/documentTypes";
@@ -14,9 +14,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({ post }) => {
 	return userProfile && (
 		<>
 			<PostHeader post={post} creatorProfile={userProfile} />
-			<Box my={2} borderRadius={4} overflow={"hidden"}>
+			<Center my={2} borderRadius={4} overflow={"hidden"}>
 				<Image src={post.imageURL} alt={"FEED POST IMG"} />
-			</Box>
+			</Center>
 			<PostFooter post={post} creatorProfile={userProfile} isProfilePage={false} />
 		</>
 	);
