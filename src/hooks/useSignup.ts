@@ -66,7 +66,7 @@ const createUser = (newUser: UserCredential, inputs: any): UserDocument => {
         followers: [],
         following: [],
         posts: [],
-        createdAt: new Date()
+        createdAt: Date.now()
     };
 }
 

@@ -39,7 +39,7 @@ const useGetFeedPosts = () => {
                     });
 				});
 
-				// feedPosts.sort((a, b) => b.createdAt - a.createdAt);
+				feedPosts.sort((a, b) => b.createdAt - a.createdAt);
 				setPosts(feedPosts);
 			} catch (error) {
 				showToast("Error", "Could not get feed posts", "error");

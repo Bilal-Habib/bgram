@@ -18,7 +18,7 @@ export const usePostComment = () => {
 		setIsCommenting(true);
 		const newComment: CommentDocument = {
 			comment: comment,
-			createdAt: new Date(),
+			createdAt: Date.now(),
 			createdBy: authUser.uid,
 			postId: postId
 		};

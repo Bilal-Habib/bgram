@@ -31,7 +31,7 @@ export const Search = () => {
 						<form onSubmit={handleSearchUser}>
 							<FormControl>
 								<FormLabel>Username</FormLabel>
-								<Input placeholder='e.g. bilalhabib' ref={searchRef} />
+								<Input placeholder='e.g. bilal' ref={searchRef} />
 							</FormControl>
 
 							<Flex w={"full"} justifyContent={"flex-end"}>

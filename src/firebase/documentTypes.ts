@@ -9,7 +9,7 @@ type UserDocument = {
     followers:string[],
     following:string[],
     posts:string[],
-    createdAt:Date
+    createdAt:number
 }
 
 type PostDocument = {
@@ -17,7 +17,7 @@ type PostDocument = {
     caption: string,
     likes: string[],
     comments: CommentDocument[],
-    createdAt: Date,
+    createdAt: number,
     createdBy: string,
     imageURL: string
 }
@@ -26,7 +26,7 @@ type CommentDocument = {
     postId: string,
     comment: string,
     createdBy: string,
-    createdAt: Date
+    createdAt: number
 }
 
 export type {UserDocument, PostDocument, CommentDocument}
